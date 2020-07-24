@@ -6,21 +6,24 @@ var frown = '<i class="fa fa-frown-o fa-lg" aria-hidden="true"></i>';
 // make even distribution of smiles and frowns
 var btnArray = document.getElementsByName('btn');
 var smileCounter = 0, frownCounter = 0;
-for(var i = 0; i < 9; i++) {
-  if (smileCounter < 5 && frownCounter < 5) {
-    if (Math.random() > 0.5) {
-      btnArray[i].value = smile;
-      smileCounter++;
-    } else {
+function distributeFaces() {
+  for (var i = 0; i < 9; i++) {
+    if (smileCounter < 5 && frownCounter < 5) {
+      if (Math.random() > 0.5) {
+        btnArray[i].value = smile;
+        smileCounter++;
+      } else {
+        btnArray[i].value = frown;
+        frownCounter++;
+      }
+    } else if (smileCounter >= 5) {
       btnArray[i].value = frown;
-      frownCounter++;
+    } else if (frownCounter >= 5) {
+      btnArray[i].value = smile;
     }
-  } else if (smileCounter >= 5) {
-    btnArray[i].value = frown;
-  } else if (frownCounter >= 5) {
-    btnArray[i].value = smile;
   }
 }
+distributeFaces();
 
 // change '?' to smile or frown upon clicking once
 function handleClick(num) {
@@ -52,7 +55,7 @@ function handleDblClick(num) {
 //checking if all faces are smiling
 var resultText = document.getElementById('result');
 var bestAttemptText = document.getElementById('best-attempt');
-function check () {
+function check() {
   var success = true;
   for (var i = 0; i < 9; i++) {
     var testBtn = document.getElementsByName('btn')[i];
@@ -63,12 +66,12 @@ function check () {
       break;
     }
   }
-  if(success) {
+  if (success) {
     resultText.innerHTML = 'congrats, all people are happy now!';
-    if(bestAttemptText.innerHTML == "" || actionCount < parseInt(bestAttemptText.innerHTML) ) {
+    if (bestAttemptText.innerHTML == "" || actionCount < parseInt(bestAttemptText.innerHTML)) {
       bestAttemptText.innerHTML = actionCount + ' actions';
     }
-    for (var i = 0; i< 9; i++) {
+    for (var i = 0; i < 9; i++) {
       btnArray[i].disabled = true;
     }
     var resetBtn = document.createElement('button');
@@ -83,7 +86,7 @@ function check () {
 
 // reset the game
 function reset() {
-  for(var i = 0; i < 9;i++) {
+  for (var i = 0; i < 9; i++) {
     btnArray[i].className = 'btn';
     btnArray[i].innerHTML = '?';
     btnArray[i].disabled = false;
@@ -92,5 +95,6 @@ function reset() {
   actionCount = 0;
   actionCountText.innerText = 'actions: 0';
   smileCounter = frownCounter = 0;
+  distributeFaces();
   document.getElementsByName('reset-btn')[0].remove();
 }
